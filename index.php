@@ -5,10 +5,15 @@
 <body>
 
 <?php
-/* Variables that you need to set */
+/* Set this to the directory that you have your html files in */
 $directory = "./blog_files/";
 
+/* Place html that you want visible on the top of you blog here */
+
+<center><h1>Blah Blog</h1></center>
+
 /* DON'T TOUCH ANYTHING BELOW HERE */
+
 
 function printFile($file) {
   $handle = fopen("$file", "r");
