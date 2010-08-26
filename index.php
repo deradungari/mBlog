@@ -1,5 +1,5 @@
-/* mBlog - Copyright 2010 Lachlan Main <lachlan.main@gmail.com> */
-/* Licensed under the GPL version 3 "http://www.gnu.org/licenses/gpl-3.0.html" */
+<!--  mBlog - Copyright 2010 Lachlan Main <lachlan.main@gmail.com> 
+      Licensed under the GPL version 3 "http://www.gnu.org/licenses/gpl-3.0.html" -->
 
 <html>
 <body>
@@ -8,9 +8,13 @@
 /* Set this to the directory that you have your html files in */
 $directory = "./blog_files/";
 
+/* What do you want your blog to be called? */
+
+$title = "Minimalism FTW!!";
+
 /* Place html that you want visible on the top of you blog here */
 
-<center><h1>Blah Blog</h1></center>
+echo "<head><title><h1>" . $title . "</h1></title></head>";
 
 /* DON'T TOUCH ANYTHING BELOW HERE */
 
