@@ -51,9 +51,6 @@ for (; $i > 2; $i--) {
   # Get the name of the file to print out 
   $FileToPrint = $directory . $files[$i - 1];
 
-  # Print the name of the file
-  echo $FileToPrint . "<br />";
-
   # Print the file
   printFile("$FileToPrint");
 }   
