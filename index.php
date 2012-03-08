@@ -37,17 +37,15 @@ function printFile($filename) {
   if (preg_match("/\.md$/i", $filename) == 1) {
 
     # Process with markdown
-    echo "<article>\n" . Markdown(file_get_contents($filename));
+    echo "<article>\n" . Markdown(file_get_contents($filename)) "\n</article>\n";
 
   } elseif (preg_match("/\.html$/", $filename)) {
 
     # Print out the entire file
-    echo "<article>\n" . file_get_contents($filename);
+    echo "<article>\n" . file_get_contents($filename) . "\n</article>\n";
 
   }
 
-  # Print a horizontal line accross the page
-  echo "</article>\n";
 }
 
 # Get a list all of the files in the directory
