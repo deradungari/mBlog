@@ -8,7 +8,7 @@
 # Import markdown
 require_once("markdown.php");
 
-# Set this to the directory that you have your html files in
+# Set this to the directory that you have your html files in, must end with a /
 $directory = "./docs/";
 
 # Set this to the title of your blog
@@ -16,7 +16,7 @@ $title = "mBlog";
 
 # Place html that you want visible on the top of you blog here
 
-echo "<head><title><h1>" . $title . "</h1></title></head>";
+echo "<head><title>" . $title . "</title></head>";
 echo "<body>";
 
 
@@ -49,7 +49,7 @@ $i = count($files, 0);
 for (; $i > 1; $i--) {
 
   # Get the name of the file to print out 
-  $FileToPrint = $directory . "/" .  $files[$i - 1];
+  $FileToPrint = $directory . $files[$i - 1];
 
   # Print the name of the file
   echo $FileToPrint . "<br />";
