@@ -1,17 +1,14 @@
 -- Setup --
 
-Create a directory somewhere on your server where you want to have your blog files, then set $directory in index.php to that directory.  Then when you want to make a new post, simply write up a html file in that directory.
+Create a directory somewhere on your server where you want to have your blog files, then set $directory in index.php to that directory.  When you want to make a new post, simply place either a html or php file in that directory.  Files with a .html ending will not be processed, files with a .md ending will be processed with markdown before being published.
 
 -- How it works --
 
-index.php lists all of the files in $directory, sorts them and then prints them.  For example, you have the following files in your directory; "a.html, b.html, c.html"
+index.php lists all of the files in $directory, sorts them and then prints them.  For example, if you have the following files in your directory; "a.html, b.html, c.html"
 
-Your website would then look like this:
+Your website would be shown like this:
 
 <title>
 <c.html>
 <b.html>
 <a.html>
-
-
-Have fun!
