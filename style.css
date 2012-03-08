@@ -1,0 +1,27 @@
+/* style.css -- defines main style for mBlog */
+
+article {
+  background-color : #EEEEEE;
+  padding          : 1px 5px 5px 5px;
+  margin           : 10px 0px 5px 0px;
+}
+
+article h1 {
+  margin            : 3px 0px 5px 0px;
+  padding           : 5px 10px 3px 6px;
+  font-weight       : normal;
+  font-size         : 22px;
+  color             : #FFFFFF;
+  background-color  : #333333;
+}
+
+header {
+  font-size : 32px;
+  margin    : 1px 0px 20px 0px;
+}
+
+html {
+  margin    : 0px auto 0px auto;
+  padding   : 5px 0px 0px 0px;
+  width     : 80%;
+}
