@@ -42,7 +42,7 @@ function printFile($filename) {
   } elseif (preg_match("/\.html$/", $filename)) {
 
     # Print out the entire file
-    echo file_get_contents($filename);
+    echo "<article>\n" . file_get_contents($filename);
 
   }
 
