@@ -14,10 +14,18 @@ $directory = "./docs/";
 # Set this to the title of your blog
 $title = "mBlog";
 
-# Place html that you want visible on the top of you blog here
+# Set to the location of your css file
+$css = "style.css";
 
-echo "<head><title>" . $title . "</title></head>";
-echo "<body>";
+echo "<head>\n  <title>" . $title . "</title>\n  <link rel=\"stylesheet\" type=\"text/css\" href=\"$css\" />\n</head>\n\n";
+echo "<body>\n";
+# Place html that you want visible on the top of your blog here
+
+echo <<<EOH
+<header>
+Just another mBlog
+</header>\n\n
+EOH;
 
 
 # DON'T MODIFY ANYTHING BELOW HERE
@@ -29,7 +37,7 @@ function printFile($filename) {
   if (preg_match("/\.md$/i", $filename) == 1) {
 
     # Process with markdown
-    echo Markdown(file_get_contents($filename));
+    echo "<article>\n" . Markdown(file_get_contents($filename));
 
   } elseif (preg_match("/\.html$/", $filename)) {
 
@@ -39,7 +47,7 @@ function printFile($filename) {
   }
 
   # Print a horizontal line accross the page
-  echo "<hr />";
+  echo "</article>\n";
 }
 
 # Get a list all of the files in the directory
@@ -54,7 +62,6 @@ for (; $i > 2; $i--) {
   # Print the file
   printFile("$FileToPrint");
 }   
-?>  
-
+?>
 </body>
 </html>
