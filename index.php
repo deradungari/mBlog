@@ -37,7 +37,7 @@ function printFile($filename) {
   if (preg_match("/\.md$/i", $filename) == 1) {
 
     # Process with markdown
-    echo "<article>\n" . Markdown(file_get_contents($filename)) "\n</article>\n";
+    echo "<article>\n" . Markdown(file_get_contents($filename)) . "\n</article>\n";
 
   } elseif (preg_match("/\.html$/", $filename)) {
 
