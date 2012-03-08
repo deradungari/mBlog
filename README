@@ -6,11 +6,10 @@ Tip: name your files based on the date like so yyyymmdd, this way mBlog will dis
 
 -- How it works --
 
-index.php lists all of the files in $directory, sorts them and then prints them.  For example, if you have the following files in your directory; "a.html, b.html, c.html"
+index.php lists all of the files in $directory, sorts them and then prints them.  For example, if you have the following files in your directory; "1.html, 2.html, 3.html"
 
 Your website would be shown like this:
 
-<title>
-<c.html>
-<b.html>
-<a.html>
+<3.html>
+<2.html>
+<1.html>
