@@ -46,7 +46,7 @@ function printFile($filename) {
 $files = scandir($directory);
 
 $i = count($files, 0);
-for (; $i > 1; $i--) {
+for (; $i > 2; $i--) {
 
   # Get the name of the file to print out 
   $FileToPrint = $directory . $files[$i - 1];
