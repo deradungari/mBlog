@@ -1,6 +1,6 @@
 -- Setup --
 
-Create a directory somewhere on your server where you want to have your blog files, then set $directory in index.php to that directory.  When you want to make a new post, simply place either a html or php file in that directory.  Files with a .html ending will not be processed, files with a .md ending will be processed with markdown before being published.
+When you want to make a new post, simply place either a html or markdown file in docs/.  Files without a .html or .md ending will not be processed; files with a .md ending will be processed with markdown before being published.
 
 -- How it works --
 
