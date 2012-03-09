@@ -1,8 +1,9 @@
+<!doctype html>
+<meta charset="UTF-8">
+
 <!--  mBlog - Copyright 2012 Lachlan Main <lachlan.main@gmail.com> 
       Licensed under the GPL version 3 "http://www.gnu.org/licenses/gpl-3.0.html" -->
 
-<!doctype html>
-<html>
 <?php
 
 # Import markdown
@@ -20,7 +21,7 @@ $css = "style.css";
 # Change this to 1 if you want your posts sorted the other way
 $sortOrder = 0;
 
-echo "<head>\n  <title>" . $title . "</title>\n  <link rel=\"stylesheet\" type=\"text/css\" href=\"$css\" />\n</head>\n\n";
+echo "<title>" . $title . "</title>\n  <link rel=\"stylesheet\" type=\"text/css\" href=\"$css\">\n";
 echo "<body>\n";
 
 
@@ -69,4 +70,3 @@ for (; $i > 0; $i--) {
 }   
 ?>
 </body>
-</html>
