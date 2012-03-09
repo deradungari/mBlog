@@ -9,7 +9,7 @@
 require_once("markdown.php");
 
 # Set this to the directory that you have your html files in, must end with a /
-$directory = "./docs/";
+$directory = "docs/";
 
 # Set this to the title of your blog
 $title = "mBlog";
@@ -17,13 +17,17 @@ $title = "mBlog";
 # Set to the location of your css file
 $css = "style.css";
 
+# Change this to 1 if you want your posts sorted the other way
+$sortOrder = 0;
+
 echo "<head>\n  <title>" . $title . "</title>\n  <link rel=\"stylesheet\" type=\"text/css\" href=\"$css\" />\n</head>\n\n";
 echo "<body>\n";
-# Place html that you want visible on the top of your blog here
 
+
+# Place html that you want visible on the top of your blog here
 echo <<<EOH
 <header>
-Just another mBlog
+$title
 </header>\n\n
 EOH;
 
@@ -48,11 +52,14 @@ function printFile($filename) {
 
 }
 
-# Get a list all of the files in the directory
-$files = scandir($directory);
+# Get a list of everything in the given directory
+if (FALSE === ($files = scandir($directory, $sortOrder))) {
+  echo "Error while scanning $directory";
+  exit(1);
+}
 
 $i = count($files, 0);
-for (; $i > 2; $i--) {
+for (; $i > 0; $i--) {
 
   # Get the name of the file to print out 
   $FileToPrint = $directory . $files[$i - 1];
