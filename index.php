@@ -21,14 +21,22 @@ $css = "style.css";
 # Change this to 1 if you want your posts sorted the other way
 $sortOrder = 0;
 
+# Change to the url of this mBlog installation
+$url = "http://127.0.0.1/Programming/mBlog/";
+
 echo "<title>" . $title . "</title>\n  <link rel=\"stylesheet\" type=\"text/css\" href=\"$css\">\n";
 echo "<body>\n";
 
+# Get the directory to go into, do not modify
+if (array_key_exists('dir', $_GET)) {
+  $dir = $_GET['dir'];
+  $directory = $directory . $dir;
+}
 
 # Place html that you want visible on the top of your blog here
 echo <<<EOH
 <header>
-$title
+$title /$dir
 </header>\n\n
 EOH;
 
@@ -54,19 +62,54 @@ function printFile($filename) {
 }
 
 # Get a list of everything in the given directory
-if (FALSE === ($files = scandir($directory, $sortOrder))) {
+if (FALSE === ($list = scandir($directory, $sortOrder))) {
   echo "Error while scanning $directory";
   exit(1);
 }
 
-$i = count($files, 0);
+# Get the number of items in $list
+$i = count($list, 0);
+
+$filesToPrint = array();
+$dirs = array();
+
+# Process the directory list
 for (; $i > 0; $i--) {
 
-  # Get the name of the file to print out 
-  $FileToPrint = $directory . $files[$i - 1];
+  # If the current element is a file, add it to $filesToPrint
+  if (is_file($directory . $list[$i - 1])) {
+    array_push($filesToPrint, $directory . $list[$i - 1]);
 
-  # Print the file
-  printFile("$FileToPrint");
-}   
+  # If the current element is a directory, add it to $dirs
+  } elseif (is_dir($directory . $list[$i - 1]) && $list[$i - 1] != '.' && $list[$i - 1] != '..') {
+    array_push($dirs, $list[$i - 1]);
+  }
+
+}
+
+echo "<nav><ul>\n<li><a href=\"" . $_SERVER['SCRIPT_NAME'] . "\">/  </a></li>";
+
+$i = count($dirs, 0);
+
+# Print out all of the directories
+for (; $i > 0; $i--) {
+
+  # Add the directory to the menu
+  echo "  <li><a href=\"" . $_SERVER['SCRIPT_NAME'] . "?dir=" . $dir . $dirs[$i - 1] . "/\">|  " . $dirs[$i - 1] . "/  </a></li>\n";
+}
+
+echo "<section></nav>";
+
+$i = count($filesToPrint, 0);
+
+# Print out all of the files
+for (; $i > 0; $i--) {
+
+  # Print the files
+  printFile($filesToPrint[$i - 1]);
+
+}
+
+echo "</section>";
 ?>
 </body>

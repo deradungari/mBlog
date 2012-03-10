@@ -1,5 +1,19 @@
 /* style.css -- defines main style for mBlog */
 
+nav {
+}
+
+nav ul {
+  list-style       : none;
+}
+
+nav ul li { display : inline; }
+
+nav ul li a {
+  text-decoration  : none;
+  color            : #0000EE;
+}
+
 article {
   background-color : #EEEEEE;
   padding          : 1px 5px 5px 5px;
