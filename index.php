@@ -61,9 +61,15 @@ function printFile($filename) {
 
 }
 
+# If the client requested a path with a ".." in it, echo an error message and exit
+if (preg_match("/\.\./", $directory) > 0) {
+  echo "<section><article><h1>Woops!</h1><p>403 -- You probably shouldn't have done that</p></article></section>";
+  exit(1);
+}
+
 # Get a list of everything in the given directory
 if (FALSE === ($list = scandir($directory, $sortOrder))) {
-  echo "Error while scanning $directory";
+  echo "<section><article><h1>Woops!</h1><p>500 -- Error while scanning $directory</p></article></section>";
   exit(1);
 }
 
