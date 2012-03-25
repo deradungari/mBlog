@@ -1,23 +1,37 @@
 /* style.css -- defines main style for mBlog */
 
 nav {
+  margin           : 10px auto 0px auto;
+  padding          : 0px;
+  float            : left;
+  border           : 1px solid black;
+  border-radius    : 7px;
+  width            : 7%;
+  text-align       : center;
 }
 
 nav ul {
   list-style       : none;
+  padding          : 5px;
+  margin           : 0px;
 }
-
-nav ul li { display : inline; }
 
 nav ul li a {
   text-decoration  : none;
-  color            : #0000EE;
+  font-size        : 0.8em;
+  color            : #000;
+}
+
+nav ul li a:hover {
+  color            : #888;
 }
 
 article {
   background-color : #EEEEEE;
   padding          : 1px 5px 5px 5px;
-  margin           : 10px 0px 5px 0px;
+  margin           : 10px auto 5px 0px;
+  width            : 90%;
+  float            : right;
 }
 
 article h1 {

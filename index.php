@@ -27,7 +27,7 @@ $url = "http://127.0.0.1/Programming/mBlog/";
 echo "<title>" . $title . "</title>\n  <link rel=\"stylesheet\" type=\"text/css\" href=\"$css\">\n";
 echo "<body>\n";
 
-# Get the directory to go into, do not modify
+# Get the directory to go into, *do not modify*
 if (array_key_exists('dir', $_GET)) {
   $dir = $_GET['dir'];
   $directory = $directory . $dir;
@@ -87,7 +87,7 @@ for (; $i > 0; $i--) {
 
 }
 
-echo "<nav><ul>\n<li><a href=\"" . $_SERVER['SCRIPT_NAME'] . "\">/  </a></li>";
+echo "<nav><ul>\n<li><a href=\"" . $_SERVER['SCRIPT_NAME'] . "\">~home</a></li>";
 
 $i = count($dirs, 0);
 
@@ -95,10 +95,10 @@ $i = count($dirs, 0);
 for (; $i > 0; $i--) {
 
   # Add the directory to the menu
-  echo "  <li><a href=\"" . $_SERVER['SCRIPT_NAME'] . "?dir=" . $dir . $dirs[$i - 1] . "/\">|  " . $dirs[$i - 1] . "/  </a></li>\n";
+  echo "  <li><a href=\"" . $_SERVER['SCRIPT_NAME'] . "?dir=" . $dir . $dirs[$i - 1] . "/\">" . $dirs[$i - 1] . "/  </a></li>\n";
 }
 
-echo "<section></nav>";
+echo "</nav><section>";
 
 $i = count($filesToPrint, 0);
 
