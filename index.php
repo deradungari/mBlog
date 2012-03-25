@@ -1,7 +1,7 @@
 <!doctype html>
 <meta charset="UTF-8">
 
-<!--  mBlog v0.3 - Copyright 2012 Lachlan Main <lachlan.main@gmail.com> 
+<!--  mBlog v0.3.1 - Copyright 2012 Lachlan Main <lachlan.main@gmail.com> 
       Licensed under the GPL version 3 "http://www.gnu.org/licenses/gpl-3.0.html" -->
 
 <?php
