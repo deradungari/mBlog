@@ -13,3 +13,8 @@ Your website would be shown like this:
 <3.html>
 <2.html>
 <1.html>
+
+
+-- Directories --
+
+You can add directories to docs/, and have post files there.  mBlog will automatically generate a menu for you to get to the other directories.

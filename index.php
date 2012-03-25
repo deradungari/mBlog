@@ -1,15 +1,16 @@
-<!--  mBlog - Copyright 2012 Lachlan Main <lachlan.main@gmail.com> 
+<!doctype html>
+<meta charset="UTF-8">
+
+<!--  mBlog v0.3 - Copyright 2012 Lachlan Main <lachlan.main@gmail.com> 
       Licensed under the GPL version 3 "http://www.gnu.org/licenses/gpl-3.0.html" -->
 
-<!doctype html>
-<html>
 <?php
 
 # Import markdown
 require_once("markdown.php");
 
 # Set this to the directory that you have your html files in, must end with a /
-$directory = "./docs/";
+$directory = "docs/";
 
 # Set this to the title of your blog
 $title = "mBlog";
@@ -17,13 +18,25 @@ $title = "mBlog";
 # Set to the location of your css file
 $css = "style.css";
 
-echo "<head>\n  <title>" . $title . "</title>\n  <link rel=\"stylesheet\" type=\"text/css\" href=\"$css\" />\n</head>\n\n";
-echo "<body>\n";
-# Place html that you want visible on the top of your blog here
+# Change this to 1 if you want your posts sorted the other way
+$sortOrder = 0;
 
+# Change to the url of this mBlog installation
+$url = "http://127.0.0.1/Programming/mBlog/";
+
+echo "<title>" . $title . "</title>\n  <link rel=\"stylesheet\" type=\"text/css\" href=\"$css\">\n";
+echo "<body>\n";
+
+# Get the directory to go into, *do not modify*
+if (array_key_exists('dir', $_GET)) {
+  $dir = $_GET['dir'];
+  $directory = $directory . $dir;
+}
+
+# Place html that you want visible on the top of your blog here
 echo <<<EOH
 <header>
-Just another mBlog
+$title /$dir
 </header>\n\n
 EOH;
 
@@ -37,31 +50,66 @@ function printFile($filename) {
   if (preg_match("/\.md$/i", $filename) == 1) {
 
     # Process with markdown
-    echo "<article>\n" . Markdown(file_get_contents($filename));
+    echo "<article>\n" . Markdown(file_get_contents($filename)) . "\n</article>\n";
 
   } elseif (preg_match("/\.html$/", $filename)) {
 
     # Print out the entire file
-    echo "<article>\n" . file_get_contents($filename);
+    echo "<article>\n" . file_get_contents($filename) . "\n</article>\n";
 
   }
 
-  # Print a horizontal line accross the page
-  echo "</article>\n";
 }
 
-# Get a list all of the files in the directory
-$files = scandir($directory);
+# Get a list of everything in the given directory
+if (FALSE === ($list = scandir($directory, $sortOrder))) {
+  echo "Error while scanning $directory";
+  exit(1);
+}
 
-$i = count($files, 0);
-for (; $i > 2; $i--) {
+# Get the number of items in $list
+$i = count($list, 0);
 
-  # Get the name of the file to print out 
-  $FileToPrint = $directory . $files[$i - 1];
+$filesToPrint = array();
+$dirs = array();
 
-  # Print the file
-  printFile("$FileToPrint");
-}   
+# Process the directory list
+for (; $i > 0; $i--) {
+
+  # If the current element is a file, add it to $filesToPrint
+  if (is_file($directory . $list[$i - 1])) {
+    array_push($filesToPrint, $directory . $list[$i - 1]);
+
+  # If the current element is a directory, add it to $dirs
+  } elseif (is_dir($directory . $list[$i - 1]) && $list[$i - 1] != '.' && $list[$i - 1] != '..') {
+    array_push($dirs, $list[$i - 1]);
+  }
+
+}
+
+echo "<nav><ul>\n<li><a href=\"" . $_SERVER['SCRIPT_NAME'] . "\">~home</a></li>";
+
+$i = count($dirs, 0);
+
+# Print out all of the directories
+for (; $i > 0; $i--) {
+
+  # Add the directory to the menu
+  echo "  <li><a href=\"" . $_SERVER['SCRIPT_NAME'] . "?dir=" . $dir . $dirs[$i - 1] . "/\">" . $dirs[$i - 1] . "/  </a></li>\n";
+}
+
+echo "</nav><section>";
+
+$i = count($filesToPrint, 0);
+
+# Print out all of the files
+for (; $i > 0; $i--) {
+
+  # Print the files
+  printFile($filesToPrint[$i - 1]);
+
+}
+
+echo "</section>";
 ?>
 </body>
-</html>
