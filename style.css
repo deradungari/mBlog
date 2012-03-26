@@ -4,52 +4,61 @@ nav {
   margin           : 10px auto 0px auto;
   padding          : 0px;
   float            : left;
-  border           : 1px solid black;
-  border-radius    : 7px;
-  width            : 7%;
-  text-align       : center;
+  width            : 10%;
 }
 
 nav ul {
   list-style       : none;
-  padding          : 5px;
+  padding          : 0px 0px 0px 0px;
   margin           : 0px;
+  border-bottom    : 1px dotted #DDD;
+}
+
+nav li {
+  border-top       : 1px dotted #DDD;
+  padding          : 5px 0px 5px 10px;
 }
 
 nav ul li a {
   text-decoration  : none;
-  font-size        : 0.8em;
-  color            : #000;
+  font-size        : 12px;
+  color            : #3B83BA;
 }
 
-nav ul li a:hover {
-  color            : #888;
+nav ul li:hover {
+  background-color : #3F3F3F;
 }
 
 article {
-  background-color : #EEEEEE;
+  background-color : #EEE;
   padding          : 1px 5px 5px 5px;
-  margin           : 10px auto 5px 0px;
-  width            : 90%;
+  margin           : 10px auto 15px 0px;
+  width            : 85%;
   float            : right;
 }
 
 article h1 {
-  margin            : 0px -5px 3px -5px;
+  margin            : -2px -10px 3px -10px;
   padding           : 5px 10px 3px 6px;
   font-weight       : normal;
   font-size         : 22px;
-  color             : #FFFFFF;
-  background-color  : #333333;
+  color             : #FFF;
+  background-color  : #4863A0;
+  box-shadow        : 0 5px 5px 0 #666;
+  -moz-box-shadow   : 1px 7px 7px #666;
+  -webkit-box-shadow: 0 5px 5px #666;
 }
 
 header {
   font-size : 32px;
   margin    : 1px 0px 20px 0px;
+  color     : #EEE;
 }
 
 html {
-  margin    : 0px auto 0px auto;
-  padding   : 5px 0px 0px 0px;
-  width     : 80%;
+  margin           : 0px auto 0px auto;
+  padding          : 5px 0px 0px 0px;
+  width            : 80%;
+  background-color : #333;
+  color            : #222;
 }
