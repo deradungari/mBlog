@@ -24,24 +24,20 @@ $sortOrder = 0;
 # Change to the url of this mBlog installation
 $url = "http://127.0.0.1/Programming/mBlog/";
 
-echo "<title>" . $title . "</title>\n  <link rel=\"stylesheet\" type=\"text/css\" href=\"$css\">\n";
-echo "<body>\n";
-
-# Get the directory to go into, *do not modify*
-if (array_key_exists('dir', $_GET)) {
-  $dir = $_GET['dir'];
-  $directory = $directory . $dir;
-}
-
-# Place html that you want visible on the top of your blog here
-echo <<<EOH
-<header>
-$title /$dir
-</header>\n\n
-EOH;
-
 
 # DON'T MODIFY ANYTHING BELOW HERE
+
+function printHeader($dir) {
+
+  global $title, $css;
+
+  echo "<title>" . $title . "</title>\n  <link rel=\"stylesheet\" type=\"text/css\" href=\"$css\">\n";
+  echo "<body>\n";
+
+  # Place anything that you want visible on the top of your blog here
+  echo "<header>$title/$dir</header>";
+
+}
 
 # printFile processes the file given
 function printFile($filename) {
@@ -61,61 +57,94 @@ function printFile($filename) {
 
 }
 
-# If the client requested a path with a ".." in it, echo an error message and exit
-if (preg_match("/\.\./", $directory) > 0) {
-  echo "<section><article><h1>Woops!</h1><p>403 -- You probably shouldn't have done that</p></article></section>";
-  exit(1);
-}
+function scanDirectory($directory) {
 
-# Get a list of everything in the given directory
-if (FALSE === ($list = scandir($directory, $sortOrder))) {
-  echo "<section><article><h1>Woops!</h1><p>500 -- Error while scanning $directory</p></article></section>";
-  exit(1);
-}
+  global $sortOrder;
 
-# Get the number of items in $list
-$i = count($list, 0);
-
-$filesToPrint = array();
-$dirs = array();
-
-# Process the directory list
-for (; $i > 0; $i--) {
-
-  # If the current element is a file, add it to $filesToPrint
-  if (is_file($directory . $list[$i - 1])) {
-    array_push($filesToPrint, $directory . $list[$i - 1]);
-
-  # If the current element is a directory, add it to $dirs
-  } elseif (is_dir($directory . $list[$i - 1]) && $list[$i - 1] != '.' && $list[$i - 1] != '..') {
-    array_push($dirs, $list[$i - 1]);
+  # If the client requested a path with a ".." in it, echo an error message and exit
+  if (preg_match("/\.\./", $directory) > 0) {
+    echo "<section><article><h1>Woops!</h1><p>403 -- You probably shouldn't have done that</p></article></section>";
+    exit(1);
   }
 
+  # Get a list of everything in the given directory
+  if (FALSE === ($list = scandir($directory, $sortOrder))) {
+    echo "<section><article><h1>Woops!</h1><p>500 -- Error while scanning $directory</p></article></section>";
+    exit(1);
+  }
+
+  # Get the number of items in $list
+  $i = count($list, 0);
+
+  $files = array();
+  $dirs = array();
+
+  # Process the directory list
+  for (; $i > 0; $i--) {
+
+    # If the current element is a file, add it to $files
+    if (is_file($directory . $list[$i - 1])) {
+    array_push($files, $directory . $list[$i - 1]);
+
+    # If the current element is a directory, add it to $dirs
+    } elseif (is_dir($directory . $list[$i - 1]) && $list[$i - 1] != '.' && $list[$i - 1] != '..') {
+      array_push($dirs, $list[$i - 1]);
+    }
+  }
+
+  return array($files, $dirs);
 }
 
-echo "<nav><ul>\n<li><a href=\"" . $_SERVER['SCRIPT_NAME'] . "\">~home</a></li>";
+function printMenu($dirs) {
 
-$i = count($dirs, 0);
+  global $dir;
 
-# Print out all of the directories
-for (; $i > 0; $i--) {
+  echo "<nav><ul>\n<li><a href=\"" . $_SERVER['SCRIPT_NAME'] . "\">~home</a></li>";
 
-  # Add the directory to the menu
-  echo "  <li><a href=\"" . $_SERVER['SCRIPT_NAME'] . "?dir=" . $dir . $dirs[$i - 1] . "/\">" . $dirs[$i - 1] . "/  </a></li>\n";
-}
+  $i = count($dirs, 0);
 
-echo "</nav><section>";
+  # Print out all of the directories
+  for (; $i > 0; $i--) {
 
-$i = count($filesToPrint, 0);
+    # Add the directory to the menu
+    echo "  <li><a href=\"" . $_SERVER['SCRIPT_NAME'] . "?dir=" . $dir . $dirs[$i - 1] . "/\">" . $dirs[$i - 1] . "/  </a></li>\n";
+  }
 
-# Print out all of the files
-for (; $i > 0; $i--) {
-
-  # Print the files
-  printFile($filesToPrint[$i - 1]);
+  echo "</nav>";
 
 }
 
-echo "</section>";
+function printPosts($filesToPrint) {
+
+  echo "<section>";
+
+  $i = count($filesToPrint, 0);
+
+  # Print out all of the files
+  for (; $i > 0; $i--) {
+
+    # Print the files
+    printFile($filesToPrint[$i - 1]);
+
+  }
+
+  echo "</section>";
+
+}
+
+$dir = '';
+
+# Get the directory to go into
+if (array_key_exists('dir', $_GET)) {
+  $dir = $_GET['dir'];
+  $directory = $directory . $dir;
+}
+
+list($files, $dirs) = scanDirectory($directory);
+printHeader($dir);
+printMenu($dirs);
+printPosts($files);
+
 ?>
 </body>
+</html>
