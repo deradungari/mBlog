@@ -11,20 +11,24 @@ $root = __DIR__ . '/docs/';  # directory with html files
 $tpl = new MicroTpl();
 $dir = isset($_GET['dir']) ? $_GET['dir'] : null;
 
-foreach(scandir($root . $dir, SCANDIR_SORT_DESCENDING) as $item){
-  if (in_array($item, array('.', '..')))
-    continue;
-  if (is_file($root . $dir . $item)){
-    $ext = strtolower(preg_filter('/^.*\.([^\.]+)$/', '\1', $item));
-    if (in_array($ext, array('md', 'html'))){
-      $text = file_get_contents($root . $dir . $item);
-      if ($ext == 'md')
-        $text = Markdown($text);
-      $tpl->texts[] = array('text' => $text);
+if (!is_dir($root . $dir) || strstr($dir, '..'))
+  $tpl->error = true;
+else{
+  foreach(scandir($root . $dir, SCANDIR_SORT_DESCENDING) as $item){
+    if (in_array($item, array('.', '..')))
+      continue;
+    if (is_file($root . $dir . $item)){
+      $ext = strtolower(preg_filter('/^.*\.([^\.]+)$/', '\1', $item));
+      if (in_array($ext, array('md', 'html'))){
+        $text = file_get_contents($root . $dir . $item);
+        if ($ext == 'md')
+          $text = Markdown($text);
+        $tpl->texts[] = array('text' => $text);
+      }
     }
+    else
+      $tpl->dirs[] = array('dir' => $item, 'dirLink' => $dir . $item);
   }
-  else
-    $tpl->dirs[] = array('dir' => $item, 'dirLink' => $dir . $item);
 }
 
 $tpl->title = $title;
@@ -51,6 +55,9 @@ ob_start();
     {@texts}
       <article>{&text}</article>
     {/texts}
+    {?error}
+      <article><h1>Error</h1><p>The page you are looking for is not here.</p></article>
+    {/error}
   </body>
 </html><?php
 
