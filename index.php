@@ -1,122 +1,64 @@
-<!doctype html>
-<meta charset="UTF-8">
-
-<!--  mBlog v0.3.2 - Copyright 2012 Lachlan Main <lachlan.main@gmail.com> 
-      Licensed under the GPL version 3 "http://www.gnu.org/licenses/gpl-3.0.html" -->
-
 <?php
 
-# Import markdown
-require_once("markdown.php");
+# mBlog v0.3.2 - Copyright 2012 Lachlan Main <lachlan.main@gmail.com>
+# Licensed under the GPL version 3 <http://www.gnu.org/licenses/gpl-3.0.html>
 
-# Set this to the directory that you have your html files in, must end with a /
-$directory = "docs/";
+require_once 'markdown.php';
+require_once 'microtpl.php';
 
-# Set this to the title of your blog
-$title = "mBlog";
+$title = 'mBlog'; # title of your blog
+$root = __DIR__ . '/docs/';  # directory with html files
+$tpl = new MicroTpl();
+$dir = isset($_GET['dir']) ? $_GET['dir'] : null;
 
-# Set to the location of your css file
-$css = "style.css";
-
-# Change this to 1 if you want your posts sorted the other way
-$sortOrder = 0;
-
-# Change to the url of this mBlog installation
-$url = "http://127.0.0.1/Programming/mBlog/";
-
-echo "<head>"
-echo "<title>" . $title . "</title>\n  <link rel=\"stylesheet\" type=\"text/css\" href=\"$css\">\n";
-echo "</head><body>\n";
-
-# Get the directory to go into, *do not modify*
-if (array_key_exists('dir', $_GET)) {
-  $dir = $_GET['dir'];
-  $directory = $directory . $dir;
-}
-
-# Place html that you want visible on the top of your blog here
-echo <<<EOH
-<header>
-$title /$dir
-</header>\n\n
-EOH;
-
-
-# DON'T MODIFY ANYTHING BELOW HERE
-
-# printFile processes the file given
-function printFile($filename) {
-
-  # Check to see whether to process with markdown or not
-  if (preg_match("/\.md$/i", $filename) == 1) {
-
-    # Process with markdown
-    echo "<article>\n" . Markdown(file_get_contents($filename)) . "\n</article>\n";
-
-  } elseif (preg_match("/\.html$/", $filename)) {
-
-    # Print out the entire file
-    echo "<article>\n" . file_get_contents($filename) . "\n</article>\n";
-
+if (!is_dir($root . $dir) || strstr($dir, '..'))
+  $tpl->error = true;
+else{
+  foreach(scandir($root . $dir, SCANDIR_SORT_DESCENDING) as $item){
+    if (in_array($item, array('.', '..')))
+      continue;
+    if (is_file($root . $dir . $item)){
+      $ext = strtolower(preg_filter('/^.*\.([^\.]+)$/', '\1', $item));
+      if (in_array($ext, array('md', 'html'))){
+        $text = file_get_contents($root . $dir . $item);
+        if ($ext == 'md')
+          $text = Markdown($text);
+        $tpl->texts[] = array('text' => $text);
+      }
+    }
+    else
+      $tpl->dirs[] = array('dir' => $item, 'dirLink' => $dir . $item);
   }
-
 }
 
-# If the client requested a path with a ".." in it, echo an error message and exit
-if (preg_match("/\.\./", $directory) > 0) {
-  echo "<section><article><h1>Woops!</h1><p>403 -- You probably shouldn't have done that</p></article></section>";
-  exit(1);
-}
+$tpl->title = $title;
+$tpl->dir = $dir;
+ob_start();
 
-# Get a list of everything in the given directory
-if (FALSE === ($list = scandir($directory, $sortOrder))) {
-  echo "<section><article><h1>Woops!</h1><p>500 -- Error while scanning $directory</p></article></section>";
-  exit(1);
-}
+?><!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{title}</title>
+    <link href="style.css" rel="stylesheet">
+  </head>
+  <body>
+    <header>{title} /{dir}</header>
+    <nav>
+      <ul>
+        <li><a href="./">~home</a></li>
+        {@dirs}
+          <li><a href="./?dir={dirLink}/">{dir}</a></li>
+        {/dirs}
+      </ul>
+    </nav>
+    {@texts}
+      <article>{&text}</article>
+    {/texts}
+    {?error}
+      <article><h1>Error</h1><p>The page you are looking for is not here.</p></article>
+    {/error}
+  </body>
+</html><?php
 
-# Get the number of items in $list
-$i = count($list, 0);
-
-$filesToPrint = array();
-$dirs = array();
-
-# Process the directory list
-for (; $i > 0; $i--) {
-
-  # If the current element is a file, add it to $filesToPrint
-  if (is_file($directory . $list[$i - 1])) {
-    array_push($filesToPrint, $directory . $list[$i - 1]);
-
-  # If the current element is a directory, add it to $dirs
-  } elseif (is_dir($directory . $list[$i - 1]) && $list[$i - 1] != '.' && $list[$i - 1] != '..') {
-    array_push($dirs, $list[$i - 1]);
-  }
-
-}
-
-echo "<nav><ul>\n<li><a href=\"" . $_SERVER['SCRIPT_NAME'] . "\">~home</a></li>";
-
-$i = count($dirs, 0);
-
-# Print out all of the directories
-for (; $i > 0; $i--) {
-
-  # Add the directory to the menu
-  echo "  <li><a href=\"" . $_SERVER['SCRIPT_NAME'] . "?dir=" . $dir . $dirs[$i - 1] . "/\">" . $dirs[$i - 1] . "/  </a></li>\n";
-}
-
-echo "</nav><section>";
-
-$i = count($filesToPrint, 0);
-
-# Print out all of the files
-for (; $i > 0; $i--) {
-
-  # Print the files
-  printFile($filesToPrint[$i - 1]);
-
-}
-
-echo "</section>";
-?>
-</body>
+$tpl->render(ob_get_clean());
