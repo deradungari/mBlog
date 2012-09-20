@@ -24,6 +24,9 @@ $sortOrder = 0;
 # Change to the url of this mBlog installation
 $url = "http://127.0.0.1/Programming/mBlog/";
 
+echo "<head>"
+echo "<title>" . $title . "</title>\n  <link rel=\"stylesheet\" type=\"text/css\" href=\"$css\">\n";
+echo "</head><body>\n";
 
 # DON'T MODIFY ANYTHING BELOW HERE
 
