@@ -8,6 +8,8 @@ require_once 'microtpl.php';
 
 $title = 'mBlog'; # title of your blog
 $root = __DIR__ . '/docs/';  # directory with html files
+
+
 $tpl = new MicroTpl();
 $dir = isset($_GET['dir']) ? $_GET['dir'] : null;
 
@@ -35,7 +37,9 @@ $tpl->title = $title;
 $tpl->dir = $dir;
 ob_start();
 
-?><!DOCTYPE html>
+?>
+
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -59,6 +63,6 @@ ob_start();
       <article><h1>Error</h1><p>The page you are looking for is not here.</p></article>
     {/error}
   </body>
-</html><?php
+</html>
 
-$tpl->render(ob_get_clean());
+<?php $tpl->render(ob_get_clean()); ?>

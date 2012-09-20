@@ -28,3 +28,5 @@ class MicroTpl{
     eval('?>' . self::parse($_tpl));
   }
 }
+
+?>
